@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
     public CharacterController controller;
-    public float speed = 6f;
+    public float speed = 4f;
     Vector3 velocity;
     public float gravity = -9.81f;
     public Transform groundCheck;
@@ -14,12 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public float jumpHeight = 1f;
     public bool isGrounded;
+    Animator animator;
     float x;
     float z;
+    
 
     private void Start()
     {
-        
+
     }
 
     void Update()
@@ -27,8 +29,8 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded)//ako sam na podu rade komande
         {
-            x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
             z = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+            x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;   
         }
         if (isGrounded && velocity.y < 0)
         {
@@ -36,15 +38,15 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift) && isGrounded)
         {
-            speed = 12f;
+            speed = 50f;
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S))
             {
-                speed = 6f; // da ne moze sprintat u stranu
+                speed = 4f; // da ne moze sprintat u stranu
             }
         }
         if (!Input.GetKey(KeyCode.LeftShift) && isGrounded)
         {
-            speed = 6f;
+            speed = 4f;
         }     
         Vector3 move = transform.right * x + transform.forward * z; // kretnja u odnosu na rotaciju modela
         //Vector3 move = new Vector3(x, 0f, z); kretnja u odnosu na svijet   
