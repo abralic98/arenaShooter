@@ -5,10 +5,11 @@ using UnityEngine;
 public class AnimatorControler : MonoBehaviour
 {
     Animator animator;
-    AudioSource audioSource;
+    AudioSource audioSourceWalk;
+    [SerializeField] AudioSource audioSourceRun;
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSourceWalk = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
     void Running()
@@ -16,12 +17,18 @@ public class AnimatorControler : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("isWalking", false);
+            if (audioSourceRun.isPlaying != true)
+            {
+                audioSourceRun.Play();
+            }
+            
             animator.SetBool("isRunning", true);
         }
         if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
+            audioSourceRun.Stop();
         }
     }
     void Strafing()
@@ -53,39 +60,47 @@ public class AnimatorControler : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             animator.SetBool("isWalking", true);
+            animator.SetBool("isWalkingGlobal", true);
             animator.SetBool("isWalkingBackward", false);
         }
         if (Input.GetKey(KeyCode.S))
         {
             animator.SetBool("isWalking", false);
             animator.SetBool("isWalkingBackward", true);
+            animator.SetBool("isWalkingGlobal", true);
         }
         if (!Input.GetKey(KeyCode.W))
         {
             animator.SetBool("isWalking", false);
+            animator.SetBool("isWalkingGlobal", false);
+
         }
         if (!Input.GetKey(KeyCode.S))
         {
             animator.SetBool("isWalkingBackward", false);
+            
         }
         
     }
     // Update is called once per frame
     void Update()
-    {
-        Debug.Log(animator.GetBool("isWalking"));
-        if (animator.GetBool("isWalking") == true || animator.GetBool("isWalkingBackward")==true || animator.GetBool("isStrafingLeft") == true || animator.GetBool("isStrafingRight") == true)
+    {//sredi ovo ne radi kako triba
+
+        if (animator.GetBool("isWalkingGlobal") == true)
         {
-            if (!audioSource.isPlaying)
+            if (!audioSourceWalk.isPlaying)
             {
-                audioSource.Play();
+                audioSourceWalk.Play();
             }
-            
+
         }
-        if (animator.GetBool("isWalking") == false)
+        if(animator.GetBool("isWalkingGlobal") == false)
         {
-            audioSource.Stop();
+            audioSourceWalk.Stop();
         }
+
+       
+
         Walking();
         Strafing();
         Running();

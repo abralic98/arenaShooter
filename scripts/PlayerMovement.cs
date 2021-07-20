@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift) && isGrounded)
         {
-            speed = 50f;
+            speed = 8f;
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S))
             {
                 speed = 4f; // da ne moze sprintat u stranu
